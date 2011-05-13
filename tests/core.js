@@ -1,6 +1,7 @@
 /*jshint boss: true, laxbreak: true, node: true, devel: true */
 
 var JSHINT = require('../jshint.js').JSHINT,
+    helper = require("./testhelper").setup.testhelper,
     assert = require('assert'),
     fs     = require('fs');
 
@@ -142,4 +143,25 @@ exports.functionScopedOptions = function () {
 exports.jslintOptions = function() {
     var src = fs.readFileSync(__dirname + '/fixtures/jslintOptions.js', 'utf8');
     assert.ok(JSHINT(src));
+};
+
+exports.complexOptions = function() {
+    var src = fs.readFileSync(__dirname + '/fixtures/complexOptions.js', 'utf8');
+
+    helper(JSHINT, src)
+        .init(false, {complex: true})
+        .run()
+            .hasError(2, "Unknown complex option 'complex'.")
+            .hasError(3, "Unknown option 'x'.")
+            .hasError(7, "Unknown complex option 'complex'.")
+            .hasError(8, "Unknown option 'x'.")
+            .hasError(9, "Unknown option 'y'.")
+            .hasError(17, "Unknown complex option 'complex'.")
+            .hasError(18, "Unknown option 'a'.")
+            .hasError(19, "Unknown option 'b'.")
+            .hasError(20, "Unknown option 'c'.")
+            .hasError(21, "Unknown option 'd'.")
+            .hasError(26, "Bad option value.")
+        .end()
+    ;
 };
