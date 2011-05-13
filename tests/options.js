@@ -700,3 +700,28 @@ exports.trailing = function () {
         .end()
     ;
 };
+
+exports.indentation = function () {
+    var src = fs.readFileSync(__dirname + '/fixtures/indent.js', 'utf8');
+
+    helper(JSHINT, src)
+        .init(false)
+        .run()
+            .hasError(5, "Mixed spaces and tabs.")
+            .hasError(6, "Mixed spaces and tabs.")
+        .end()
+        .init(false, { indent: 4, white: true })
+        .run()
+            .hasError(5, "Mixed spaces and tabs.")
+            .hasError(6, "Mixed spaces and tabs.")
+        .end()
+        .init(false, { indent: 2, white: true })
+        .run()
+            .hasError(5, "Mixed spaces and tabs.")
+            .hasError(5, "Expected 'var' to have an indentation at 5 instead at 7.")
+            .hasError(6, "Mixed spaces and tabs.")
+            .hasError(6, "Expected 'var' to have an indentation at 5 instead at 7.")
+            .hasError(7, "Expected '}' to have an indentation at 3 instead at 5.")
+        .end()
+    ;
+};
