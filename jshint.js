@@ -746,6 +746,21 @@ var JSHINT = (function () {
         }
     }
 
+    function combineabsent(t, o) {
+        var n;
+        for (n in o) {
+            if (is_own(o, n)) {
+                if (t[n] === undefined || t[n] === null || typeof t[n] !== typeof o[n]) {
+                    // overwrite undefined and misdefined values so at the end
+                    // all values have the expected type
+                    t[n] = o[n];
+                } else if (typeof o[n] === 'object') {
+                    combineabsent(t[n], o[n]);
+                }
+            }
+        }
+    }
+
     function assume() {
         if (option.couch)
             combine(predefined, couch);
@@ -3674,7 +3689,7 @@ loop:   for (;;) {
         option.indent = option.indent || 4;
         option.maxerr = option.maxerr || 50;
 
-        combine(option, complexOptions);
+        combineabsent(option, complexOptions);
 
         tab = '';
         for (i = 0; i < option.indent; i += 1) {
