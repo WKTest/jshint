@@ -18,7 +18,7 @@ exports.checkJSHint = function () {
 
 /** Rhino wrapper must pass JSHint check */
 exports.checkRhino = function () {
-    var src = fs.readFileSync(__dirname + "/../env/rhino.js", "utf8");
+    var src = fs.readFileSync(__dirname + "/../env/jshint-rhino.js", "utf8");
     assert.ok(JSHINT(src, { rhino: true }));
 };
 
@@ -33,7 +33,7 @@ exports.checkTestFiles = function () {
             res = JSHINT(src);
 
         if (!res)
-            console.log(JSHINT.errors);
+            console.log(name, JSHINT.errors);
 
         assert.ok(res);
         assert.isUndefined(JSHINT.data().implieds);
@@ -162,6 +162,8 @@ exports.complexOptions = function() {
             .hasError(20, "Unknown option 'c'.")
             .hasError(21, "Unknown option 'd'.")
             .hasError(26, "Bad option value.")
+            .hasError(28, "Bad option.")
+            .hasError(28, "Missing option value.")
         .end()
     ;
 };

@@ -302,6 +302,8 @@ exports.eqnull = function () {
     var code = [
         'if (e == null) doSomething();'
       , 'if (null == e) doSomething();'
+      , 'if (e != null) doSomething();'
+      , 'if (null != e) doSomething();'
     ];
 
     helper(JSHINT, code)
@@ -310,6 +312,8 @@ exports.eqnull = function () {
         .run()
             .hasError(1, "Use '===' to compare with 'null'.")
             .hasError(2, "Use '===' to compare with 'null'.")
+            .hasError(3, "Use '!==' to compare with 'null'.")
+            .hasError(4, "Use '!==' to compare with 'null'.")
         .end()
         
         // But when `eqnull` is true, no questions asked
@@ -680,10 +684,10 @@ exports.white = function () {
             .hasError(5, "Missing space after 'function'.")
             .hasError(6, "Missing space after 'if'.")
             .hasError(6, "Missing space after ')'.")
-            .hasError(14, "Unexpected space after 'true'.")
-            .hasError(15, "Missing space after ':'.")
-            .hasError(18, "Unexpected space after '('.")
-            .hasError(18, "Unexpected space after 'ex'.")
+            .hasError(13, "Unexpected space after 'true'.")
+            .hasError(14, "Missing space after ':'.")
+            .hasError(17, "Unexpected space after '('.")
+            .hasError(17, "Unexpected space after 'ex'.")
         .end()
     ;
 };
@@ -695,7 +699,7 @@ exports.trailing = function () {
         .init(true)
         .init(false, { trailing: true })
         .run()
-            .hasError(7, "Trailing whitespace.")
+            .hasError(8, "Trailing whitespace.")
             .hasError(9, "Trailing whitespace.")
         .end()
     ;
