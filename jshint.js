@@ -227,7 +227,7 @@
  format, currentLevel,
  inc, dec, currentPosition, getString, lengthOf, levelFrom, levelOf, set, unset,
  indentation, direct, testWhite, testCommaAlign, lineBreakOrWhite, lineBreak
- useTabs, tabSize, firstLevel, caseLabel, caseContent, rules,
+ useTabs, tabSize, firstLevel, caseLabel, caseContent, rules, needed,
  common, expr_comma, comma_expr, label_colon, expr_semicolon, semicolon_expr,
  operators, expr_op, op_expr,
  block, identifier_bracket, parenthesis_bracket*/
@@ -342,6 +342,7 @@ var JSHINT = (function () {
                 },
                 
                 rules: {
+                    needed: " ",            // e.g. before and after 'in' or after 'delete'
                     common: {
                         expr_comma: "",     // 1_, 2
                         comma_expr: " ",    // 1,_2
@@ -2388,6 +2389,9 @@ loop:   for (;;) {
                     warning("Bad operand.", this);
                 }
             }
+            if (this.identifier) {
+                format.testWhite(this, this.right, option.format.rules.needed);
+            }
             return this;
         };
         return x;
@@ -3144,6 +3148,7 @@ loop:   for (;;) {
     prefix('--', 'predec');
     syntax['--'].exps = true;
     prefix('delete', function () {
+        format.testWhite(token, nexttoken, option.format.rules.needed);
         var p = expression(0);
         if (!p || (p.id !== '.' && p.id !== '[')) {
             warning("Variables should not be deleted.");
@@ -3170,6 +3175,7 @@ loop:   for (;;) {
     });
     prefix('typeof', 'typeof');
     prefix('new', function () {
+        format.testWhite(token, nexttoken, option.format.rules.needed);
         var c = expression(155), i;
         if (c && c.id !== 'function') {
             if (c.identifier) {
@@ -3890,7 +3896,9 @@ loop:   for (;;) {
                 }
                 advance();
             }
+            format.testWhite(token, nexttoken, option.format.rules.needed);
             advance('in');
+            format.testWhite(token, nexttoken, option.format.rules.needed);
             expression(20);
             advance(')', t);
             s = block(true, true);
@@ -3964,6 +3972,7 @@ loop:   for (;;) {
 
         if (nexttoken.id !== ';') {
             if (token.line === nexttoken.line) {
+                format.testWhite(token, nexttoken, option.format.rules.needed);
                 if (funct[v] !== 'label') {
                     warning("'{a}' is not a statement label.", nexttoken, v);
                 } else if (scope[v] !== funct) {
@@ -3989,6 +3998,7 @@ loop:   for (;;) {
 
         if (nexttoken.id !== ';') {
             if (token.line === nexttoken.line) {
+                format.testWhite(token, nexttoken, option.format.rules.needed);
                 if (funct[v] !== 'label') {
                     warning("'{a}' is not a statement label.", nexttoken, v);
                 } else if (scope[v] !== funct) {
@@ -4014,6 +4024,7 @@ loop:   for (;;) {
 
         if (this.line === nexttoken.line || !option.asi) {
             if (nexttoken.id !== ';' && !nexttoken.reach) {
+                format.testWhite(token, nexttoken, option.format.rules.needed);
                 nonadjacent(token, nexttoken);
                 this.first = expression(20);
             }
@@ -4025,6 +4036,7 @@ loop:   for (;;) {
 
 
     stmt('throw', function () {
+        format.testWhite(token, nexttoken, option.format.rules.needed);
         nolinebreak(this);
         nonadjacent(token, nexttoken);
         this.first = expression(20);
