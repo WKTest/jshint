@@ -2741,6 +2741,7 @@ loop:   for (;;) {
         if (nexttoken.id === '{') {
             advance('{');
             if (nexttoken.id !== '}' || token.line !== nexttoken.line) {
+                format.indent.inc();
                 indent += option.indent;
                 while (!ordinary && nexttoken.from > indent) {
                     indent += option.indent;
@@ -2751,6 +2752,7 @@ loop:   for (;;) {
                 }
                 a = statements();
                 strict_mode = m;
+                format.indent.dec();
                 indent -= option.indent;
                 indentation();
             }
@@ -3312,6 +3314,7 @@ loop:   for (;;) {
         var b = token.line !== nexttoken.line;
         this.first = [];
         if (b) {
+            format.indent.inc();
             indent += option.indent;
             if (nexttoken.from === indent + option.indent) {
                 indent += option.indent;
@@ -3340,6 +3343,7 @@ loop:   for (;;) {
             }
         }
         if (b) {
+            format.indent.dec();
             indent -= option.indent;
             indentation();
         }
@@ -3427,6 +3431,7 @@ loop:   for (;;) {
 
             b = token.line !== nexttoken.line;
             if (b) {
+                format.indent.inc();
                 indent += option.indent;
                 if (nexttoken.from === indent + option.indent) {
                     indent += option.indent;
@@ -3499,6 +3504,7 @@ loop:   for (;;) {
                 }
             }
             if (b) {
+                format.indent.dec();
                 indent -= option.indent;
                 indentation();
             }
@@ -3687,6 +3693,7 @@ loop:   for (;;) {
         t = nexttoken;
         advance('{');
         nonadjacent(token, nexttoken);
+        format.indent.inc();
         indent += option.indent;
         this.cases = [];
         for (;;) {
@@ -3737,6 +3744,7 @@ loop:   for (;;) {
                 advance(':');
                 break;
             case '}':
+                format.indent.dec();
                 indent -= option.indent;
                 indentation();
                 advance('}', t);
