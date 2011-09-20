@@ -3390,6 +3390,7 @@ loop:   for (;;) {
                 break;
             }
             if (b && token.line !== nexttoken.line) {
+                format.indentation();
                 indentation();
             }
             this.first.push(expression(10));
@@ -3406,6 +3407,7 @@ loop:   for (;;) {
         if (b) {
             format.indent.dec();
             indent -= option.indent;
+            format.indentation();
             indentation();
         }
         advance(']', this);
@@ -3503,6 +3505,7 @@ loop:   for (;;) {
                     break;
                 }
                 if (b) {
+                    format.indentation();
                     indentation();
                 }
                 if (nexttoken.value === 'get' && peek().id !== ':') {
@@ -3526,6 +3529,7 @@ loop:   for (;;) {
                     }
                     adjacent(token, nexttoken);
                     advance(',');
+                    format.indentation();
                     indentation();
                     advance('set');
                     j = property_name();
@@ -3567,6 +3571,7 @@ loop:   for (;;) {
             if (b) {
                 format.indent.dec();
                 indent -= option.indent;
+                format.indentation();
                 indentation();
             }
             advance('}', this);
@@ -3780,6 +3785,7 @@ loop:   for (;;) {
                             token);
                     }
                 }
+                format.indentation();
                 indentation(-option.indent);
                 advance('case');
                 this.cases.push(expression(20));
@@ -3804,6 +3810,7 @@ loop:   for (;;) {
                         if (option.format.indent.caseContent) format.indent.dec();
                     }
                 }
+                format.indentation();
                 indentation(-option.indent);
                 advance('default');
                 g = true;
@@ -3813,6 +3820,7 @@ loop:   for (;;) {
             case '}':
                 if (option.format.indent.caseLabel) format.indent.dec();
                 indent -= option.indent;
+                format.indentation();
                 indentation();
                 advance('}', t);
                 if (this.cases.length === 1 || this.condition.id === 'true' ||
