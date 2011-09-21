@@ -2074,11 +2074,11 @@ loop:   for (;;) {
         } )();
         
         function escapeWhitespace(s, maxlen) {
-            return (s.length > maxlen ? s.substr(0, maxlen) + "..." : s)
+            return s ? (s.length > maxlen ? s.substr(0, maxlen) + "..." : s)
                 .replace(/ /g, "\xB7")
                 .replace(/\f/g, "\\f")
                 .replace(/\t/g, "\\t")
-                .replace(/\xA0/g, "*");
+                .replace(/\xA0/g, "*") : "";
         }
         
         function rightMost(l) {
