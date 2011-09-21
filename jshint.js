@@ -233,7 +233,7 @@
  operators, unary_expr, expr_op, op_expr, name_assignment, assignment_expr,
  block, identifier_bracket, bracket_identifier, parenthesis_bracket, identifier_identifier,
  objectLiteral, name_colon, colon_expr,
- identifier_name, name_parenthesis,
+ identifier_name, name_parenthesis, parameters, parenthesis_name, parenthesis_parenthesis,
  if, switch, case_expr, expr_colon*/
 
 /*global exports: false */
@@ -381,7 +381,13 @@ var JSHINT = (function () {
                     "function": {
                         identifier_name: " ",             // function_x (
                         name_parenthesis: "",             // function x_(
-                        identifier_parenthesis: " "       // function_(       anonymous function
+                        identifier_parenthesis: " ",      // function_(    anonymous function
+                        parameters: {
+                            parenthesis_name: "",         // function (_a)
+                            name_parenthesis: "",         // function ( a_)
+                            parenthesis_parenthesis: ""   // function (_)
+                        }
+                        
                     },
                     "if": {
                         parenthesis_expr: "",             // if (_x )
@@ -3477,9 +3483,12 @@ loop:   for (;;) {
         nospace();
         if (nexttoken.id === ')') {
             advance(')');
+            format.testWhite(prevtoken, token, option.format.rules['function'].parameters.parenthesis_parenthesis);
             nospace(prevtoken, token);
             return;
         }
+
+        format.testWhite(token, nexttoken, option.format.rules['function'].parameters.parenthesis_name);
         for (;;) {
             i = identifier(true);
             p.push(i);
@@ -3488,6 +3497,7 @@ loop:   for (;;) {
                 comma();
             } else {
                 advance(')', t);
+                format.testWhite(prevtoken, token, option.format.rules['function'].parameters.name_parenthesis);
                 nospace(prevtoken, token);
                 return p;
             }
