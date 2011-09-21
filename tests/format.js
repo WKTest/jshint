@@ -70,6 +70,11 @@ exports.format_whitespace = function () {
             .hasError(36, "Unexpected whitespace '\xB7' between 'a' and ':'.")
             .hasError(37, "Unexpected whitespace '\xB7\xB7' between 'b' and ':'.")
             .hasError(37, "Expected whitespace '\xB7' between ':' and '3', but '\xB7\xB7\xB7' found.")
+            // if
+            .hasError(41, "Expected whitespace '\xB7' between 'if' and '(', but '\xB7\xB7' found.")
+            .hasError(41, "Expected whitespace '\xB7' between ')' and '{', but '\xB7\xB7' found.")
+            .hasError(41, "Expected whitespace '\xB7' between '}' and 'else', but '\xB7\xB7' found.")
+            .hasError(41, "Expected whitespace '\xB7' between 'else' and 'if', but '\xB7\xB7' found.")
             
         .end()
     ;
