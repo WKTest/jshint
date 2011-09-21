@@ -318,3 +318,32 @@ exports.format_switch = function () {
     ;
 
 };
+
+
+/**
+ * For statement rules
+ * different whitespace rules in for statement
+ */
+exports.format_switch = function () {
+    var src = fs.readFileSync(__dirname + "/fixtures/format/for.js", "utf8");
+    
+    helper(JSHINT, src)
+        .init(false, {white: true, checkformat: false})
+        .run()
+            .hasError(17, "Missing space after 'for'.")
+            .hasError(35, "Missing space after 'for'.")
+            .hasError(35, "Unexpected space after '('.")
+            .hasError(53, "Missing space after 'for'.")
+            .hasError(53, "Unexpected space after '('.")
+            .hasError(53, "Unexpected space after ';'.")
+            .hasError(71, "Unexpected space after '('.")
+            .hasError(71, "Unexpected space after ';'.")
+            .hasError(89, "Unexpected space after '('.")
+            .hasError(89, "Unexpected space after ';'.")
+        .end()
+        .init(true, {white: false, checkformat: true})
+        .run()
+        .end()
+    ;
+
+};
