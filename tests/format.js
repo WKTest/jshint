@@ -63,6 +63,9 @@ exports.format_whitespace = function () {
             .hasError(30, "Expected whitespace '\xB7' between '=' and '2', but '\xB7\xB7\xB7\xB7' found.")
             .hasError(31, "Expected whitespace '\xB7' between 'c' and '=', but '\xB7\xB7\xB7' found.")
             .hasError(31, "Expected whitespace '\xB7' between '=' and '3', but '\xB7\xB7' found.")
+            // bitwise assign
+            .hasError(33, "Expected whitespace '\xB7' between 'a' and '|=', but '\xB7\xB7' found.")
+            .hasError(33, "Expected whitespace '\xB7' between '|=' and '3', but '\xB7\xB7' found.")
             
         .end()
     ;
