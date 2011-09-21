@@ -1215,7 +1215,7 @@ var JSHINT = (function () {
                         if (c === x) {
                             character += 1;
                             s = s.substr(j + 1);
-                            return it('(string)', r, x, ws);
+                            return it('(string)', r, ws);
                         }
                         if (c < ' ') {
                             if (c === '\n' || c === '\r') {
