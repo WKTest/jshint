@@ -229,7 +229,7 @@
  indentation, direct, testWhite, testCommaAlign, lineBreakOrWhite, lineBreak
  useTabs, tabSize, firstLevel, caseLabel, caseContent, rules, needed,
  common, expr_dot, dot_expr, expr_comma, comma_expr, label_colon, expr_semicolon, semicolon_expr,
- identifier_parenthesis, expr_parenthesis, parenthesis_expr,
+ identifier_parenthesis, expr_parenthesis, parenthesis_expr, semicolon_semicolon
  operators, unary_expr, expr_op, op_expr,
  block, identifier_bracket, bracket_identifier, parenthesis_bracket*/
 
@@ -354,7 +354,8 @@ var JSHINT = (function () {
                         semicolon_expr: " ",          // x.y();_x = 2
                         identifier_parenthesis: " ",  // if_(, while_(, catch_( ...
                         expr_parenthesis: "",         // if ( true_), ...
-                        parenthesis_expr: ""          // if (_true, while (_1, ...
+                        parenthesis_expr: "",         // if (_true, while (_1, ...
+                        semicolon_semicolon: ""       // for (;_;) in empty for-statements
                     },
                     operators: {
                         unary_expr: "",     // -_2  new, void and delete are excluded from this rule
@@ -3910,7 +3911,9 @@ loop:   for (;;) {
         var s, t = nexttoken;
         funct['(breakage)'] += 1;
         funct['(loopage)'] += 1;
+        format.testWhite(token, nexttoken, option.format.rules.common.identifier_parenthesis);
         advance('(');
+        format.testWhite(token, nexttoken, option.format.rules.common.parenthesis_expr);
         nonadjacent(this, t);
         nospace();
         if (peek(nexttoken.id === 'var' ? 1 : 0).id === 'in') {
@@ -3934,6 +3937,7 @@ loop:   for (;;) {
             advance('in');
             format.testWhite(token, nexttoken, option.format.rules.needed);
             expression(20);
+            format.testWhite(token, nexttoken, option.format.rules.common.expr_parenthesis);
             advance(')', t);
             s = block(true, true);
             if (option.forin && (s.length > 1 || typeof s[0] !== 'object' ||
@@ -3958,10 +3962,12 @@ loop:   for (;;) {
                         comma();
                     }
                 }
+                format.testWhite(token, nexttoken, option.format.rules.common.expr_semicolon);
             }
             nolinebreak(token);
             advance(';');
             if (nexttoken.id !== ';') {
+                format.testWhite(token, nexttoken, option.format.rules.common.semicolon_expr);
                 expression(20);
                 if (nexttoken.id === '=') {
                     if (!option.boss)
@@ -3969,10 +3975,14 @@ loop:   for (;;) {
                     advance('=');
                     expression(20);
                 }
+                format.testWhite(token, nexttoken, option.format.rules.common.expr_semicolon);
+            } else {
+                format.testWhite(token, nexttoken, option.format.rules.common.semicolon_semicolon);
             }
             nolinebreak(token);
             advance(';');
             if (nexttoken.id === ';') {
+                format.testWhite(token, nexttoken, option.format.rules.common.semicolon_expr);
                 error("Expected '{a}' and instead saw '{b}'.",
                         nexttoken, ')', ';');
             }
@@ -3985,6 +3995,7 @@ loop:   for (;;) {
                     comma();
                 }
             }
+            format.testWhite(token, nexttoken, option.format.rules.common.expr_parenthesis);
             advance(')', t);
             nospace(prevtoken, token);
             block(true, true);

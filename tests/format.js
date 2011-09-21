@@ -40,6 +40,16 @@ exports.format_whitespace = function () {
             .hasError(21, "Expected whitespace '\xB7' between '}' and 'while', but '\xB7\xB7' found.")
             .hasError(21, "Expected whitespace '\xB7' between 'while' and '(', but '\xB7\xB7\xB7' found.")
             .hasError(23, "Expected whitespace '\xB7' between '}' and 'while', but '' found.")
+            // for
+            .hasError(25, "Expected whitespace '\xB7' between 'for' and '(', but '\xB7\xB7' found.")
+            .hasError(25, "Unexpected whitespace '\xB7\xB7' between 'i' and ';'.")
+            .hasError(25, "Expected whitespace '\xB7' between ';' and 'i', but '\xB7\xB7\xB7' found.")
+            .hasError(25, "Expected whitespace '\xB7' between 'i' and '<', but '\xB7\xB7' found.")
+            .hasError(25, "Expected whitespace '\xB7' between '<' and '3', but '\xB7\xB7\xB7' found.")
+            .hasError(25, "Unexpected whitespace '\xB7\xB7' between '3' and ';'.")
+            .hasError(25, "Expected whitespace '\xB7' between ')' and '{', but '\xB7\xB7\xB7' found.")
+            .hasError(26, "Expected whitespace '\xB7' between ';' and 'i', but '' found.")
+            .hasError(27, "Unexpected whitespace '\xB7\xB7' between ';' and ';'.")
          .end()
     ;
 };
