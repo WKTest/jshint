@@ -10,7 +10,7 @@ var JSHINT = require('../jshint.js').JSHINT,
     fs     = require('fs');
 
 /**
- * Braces
+ * Whitespace rules
  */
 exports.format_whitespace = function () {
     var src = fs.readFileSync(__dirname + "/fixtures/format/whitespace.js", "utf8");
