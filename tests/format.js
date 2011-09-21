@@ -32,6 +32,8 @@ exports.format_whitespace = function () {
             .hasError(7, "Unexpected whitespace '\xB7\xB7\xB7\xB7\xB7' between 'ex' and ')'.")
             .hasError(7, "Expected whitespace '\xB7' between ')' and '{', but '\xB7\xB7\xB7\xB7\xB7...' found.")
             .hasError(11, "Expected whitespace '\xB7' between '}' and 'catch', but '' found.")
+            // try
+            .hasError(14, "Expected whitespace '\xB7' between 'throw' and 'test', but '\xB7\xB7\xB7' found.")
             // while
             .hasError(17, "Expected whitespace '\xB7' between 'while' and '(', but '\xB7\xB7' found.")
             .hasError(17, "Expected whitespace '\xB7' between ')' and '{', but '\xB7\xB7\xB7' found.")
@@ -50,6 +52,6 @@ exports.format_whitespace = function () {
             .hasError(25, "Expected whitespace '\xB7' between ')' and '{', but '\xB7\xB7\xB7' found.")
             .hasError(26, "Expected whitespace '\xB7' between ';' and 'i', but '' found.")
             .hasError(27, "Unexpected whitespace '\xB7\xB7' between ';' and ';'.")
-         .end()
+        .end()
     ;
 };
