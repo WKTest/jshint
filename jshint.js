@@ -4213,6 +4213,7 @@ loop:   for (;;) {
             tab += ' ';
         }
         indent = 1;
+        format.indent.set(0);
         global = Object.create(predefined);
         scope = global;
         funct = {
