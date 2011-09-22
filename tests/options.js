@@ -729,3 +729,28 @@ exports.indentation = function () {
         .end()
     ;
 };
+
+/** Test string relevant options
+ *    multistr    allows multiline strings
+ *
+ */
+exports.strings = function() {
+    var src = fs.readFileSync(__dirname + '/fixtures/strings.js', 'utf8');
+    helper(JSHINT, src)
+        .init(false, { multistr: true })
+        .run()
+            .hasError(9, "Unclosed string.")
+            .hasError(10, "Unclosed string.")
+            .hasError(15, "Unclosed string.")
+        .end()
+        .init(false)
+        .run()
+            .hasError(3, "Bad escapement of EOL. Use option multistr if needed.")
+            .hasError(4, "Bad escapement of EOL. Use option multistr if needed.")
+            .hasError(9, "Unclosed string.")
+            .hasError(10, "Unclosed string.")
+            .hasError(14, "Bad escapement of EOL. Use option multistr if needed.")
+            .hasError(15, "Unclosed string.")
+        .end()
+    ;
+};
